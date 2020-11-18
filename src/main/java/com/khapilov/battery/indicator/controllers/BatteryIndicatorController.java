@@ -4,6 +4,7 @@ import com.khapilov.battery.indicator.Battery;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.net.URL;
@@ -18,8 +19,10 @@ public class BatteryIndicatorController implements Initializable {
     private ImageView indicatorImage;
     @FXML
     private Label batteryIndicatorName;
-
     private Battery battery;
+
+    private static final Image onImage = new Image("src/main/resources/com/khapilov/battery/indicator/icon/green-button.png");
+    private static final Image offImage = new Image("src/main/resources/com/khapilov/battery/indicator/icon/red-button.png");
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -34,5 +37,13 @@ public class BatteryIndicatorController implements Initializable {
     private void update() {
         System.out.println(battery.getName() + "|" + battery.getIpAddress());
         batteryIndicatorName.setText(battery.getName());
+    }
+
+    public void turnOn() {
+        indicatorImage.setImage(onImage);
+    }
+
+    public void turnOff() {
+        indicatorImage.setImage(offImage);
     }
 }

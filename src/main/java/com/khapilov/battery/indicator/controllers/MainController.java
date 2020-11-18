@@ -66,5 +66,7 @@ public class MainController implements Initializable {
         cam2BatteryController.bindData(new Battery("CAM2", "192.168.1.23"));
         cam3BatteryController.bindData(new Battery("CAM3", "192.168.1.33"));
         cam4BatteryController.bindData(new Battery("CAM4", "192.168.1.43"));
+
+        armBatteryController.turnOn();
     }
 }
