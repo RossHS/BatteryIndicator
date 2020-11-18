@@ -1,16 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
-
-<AnchorPane id="battery" prefHeight="96.0" prefWidth="139.0" stylesheets="@applicationStyle.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.khapilov.battery.indicator.controllers.BatteryIndicatorController">
-    <children>
-        <Label layoutX="107.0" layoutY="14.0" text="Label" />
-        <Ellipse fill="DODGERBLUE" layoutX="46.0" layoutY="58.0" radiusX="32.0" radiusY="18.0" stroke="BLACK" strokeType="INSIDE" />
-        <ImageView fx:id="indicatorImage" fitHeight="22.0" fitWidth="28.0" layoutX="14.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true">
-            <Image url="@icon/red-button.png" />
-        </ImageView>
-    </children>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Ellipse?>
+<?import javafx.scene.text.Font?>
+<AnchorPane id="battery" prefHeight="96.0" prefWidth="139.0" stylesheets="@applicationStyle.css"
+            xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.khapilov.battery.indicator.controllers.BatteryIndicatorController">
+    <Label fx:id="batteryIndicatorName" layoutX="48.0" layoutY="9.0" text="Name" textFill="WHITE">
+        <font>
+            <Font name="Century Gothic Bold" size="22.0"/>
+        </font>
+    </Label>
+    <Ellipse fill="DODGERBLUE" layoutX="120.0" layoutY="63.0" radiusX="106.0" radiusY="23.0" stroke="BLACK"
+             strokeType="INSIDE"/>
+    <ImageView fx:id="indicatorImage" fitHeight="22.0" fitWidth="28.0" layoutX="14.0" layoutY="12.0"
+               pickOnBounds="true" preserveRatio="true">
+        <Image url="@icon/red-button.png"/>
+    </ImageView>
 </AnchorPane>

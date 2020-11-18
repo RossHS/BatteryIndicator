@@ -1,8 +1,9 @@
 package com.khapilov.battery.indicator.controllers;
 
+import com.khapilov.battery.indicator.Battery;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.effect.Glow;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 
 import java.net.URL;
@@ -14,10 +15,24 @@ import java.util.ResourceBundle;
  */
 public class BatteryIndicatorController implements Initializable {
     @FXML
-    ImageView indicatorImage;
+    private ImageView indicatorImage;
+    @FXML
+    private Label batteryIndicatorName;
+
+    private Battery battery;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println("!!!");
+
+    }
+
+    public void bindData(Battery battery) {
+        this.battery = battery;
+        update();
+    }
+
+    private void update() {
+        System.out.println(battery.getName() + "|" + battery.getIpAddress());
+        batteryIndicatorName.setText(battery.getName());
     }
 }
