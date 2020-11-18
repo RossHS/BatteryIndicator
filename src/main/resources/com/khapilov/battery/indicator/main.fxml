@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<VBox fillWidth="false" spacing="15.0" xmlns="http://javafx.com/javafx/11.0.2"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.khapilov.battery.indicator.controllers.MainController">
+    <fx:include source="battery_indicator.fxml" VBox.vgrow="NEVER"/>
+    <HBox fillHeight="false" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
+        <fx:include source="battery_indicator.fxml"/>
+        <fx:include source="battery_indicator.fxml"/>
+        <fx:include source="battery_indicator.fxml"/>
+        <fx:include source="battery_indicator.fxml"/>
+    </HBox>
+    <HBox fillHeight="false" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
+        <fx:include source="battery_indicator.fxml"/>
+        <fx:include source="battery_indicator.fxml"/>
+        <fx:include source="battery_indicator.fxml"/>
+        <fx:include source="battery_indicator.fxml"/>
+    </HBox>
+    <padding>
+        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0"/>
+    </padding>
+
+</VBox>
