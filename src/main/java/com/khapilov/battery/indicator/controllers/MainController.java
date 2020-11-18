@@ -5,8 +5,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
 
+import java.net.InetAddress;
+import java.net.NetworkInterface;
 import java.net.URL;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * @author Ross Khapilov
@@ -57,7 +59,9 @@ public class MainController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         armBatteryController.bindData(new Battery("ARM", "192.168.1.1"));
 
-        rtr1BatteryController.bindData(new Battery("RTR1", "192.168.1.12"));
+        Battery rtr1 = new Battery("RTR1", "192.168.1.12");
+        rtr1.setPercentCharging(50);
+        rtr1BatteryController.bindData(rtr1);
         rtr2BatteryController.bindData(new Battery("RTR2", "192.168.1.22"));
         rtr3BatteryController.bindData(new Battery("RTR3", "192.168.1.32"));
         rtr4BatteryController.bindData(new Battery("RTR4", "192.168.1.42"));
@@ -68,5 +72,39 @@ public class MainController implements Initializable {
         cam4BatteryController.bindData(new Battery("CAM4", "192.168.1.43"));
 
         armBatteryController.turnOn();
+
+
+        Thread thread = new Thread(() -> {
+            while (true) {
+                try {
+                    Thread.sleep(2_000); // Пауза 2 сек
+                    Enumeration<NetworkInterface> nets = NetworkInterface.getNetworkInterfaces();
+                    for (NetworkInterface netint : Collections.list(nets))
+                        checkAvailableInterfaceInformation(netint);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.setDaemon(true);
+        thread.start();
+
+    }
+
+    //TODO Идея попробовать через таймер вычитывать из подключенных батарей каждые N время процент заряда
+    //TODO доделать реакцию на ip адреса
+    private static void checkAvailableInterfaceInformation(NetworkInterface netInt) {
+//        System.out.printf("Display name: %s\n", netInt.getDisplayName());
+//        System.out.printf("Name: %s\n", netInt.getName());
+        Set<String> availableHosts = new HashSet<>();
+
+        Enumeration<InetAddress> inetAddresses = netInt.getInetAddresses();
+        for (InetAddress inetAddress : Collections.list(inetAddresses)) {
+            System.out.println("Display name - " + netInt.getDisplayName());
+            System.out.println("InetAddress - " + inetAddress.getHostAddress());
+            availableHosts.add(inetAddress.getHostAddress());
+        }
+
+
     }
 }
