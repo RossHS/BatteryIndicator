@@ -18,6 +18,8 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         scene = new Scene(loadFXML("main"));
+        //Сглаживание текста
+        System.setProperty("prism.lcdtext", "false");
         stage.setScene(scene);
         stage.show();
     }
