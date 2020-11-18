@@ -8,3 +8,19 @@
 #main {
     -fx-background-color: #4f4f4f;
 }
+
+.green-bar {
+    -fx-accent: #07cd07;
+}
+
+.yellow-bar {
+    -fx-accent: #cbcb11;
+}
+
+.orange-bar {
+    -fx-accent: #ae740f;
+}
+
+.red-bar {
+    -fx-accent: #ff0000;
+}
