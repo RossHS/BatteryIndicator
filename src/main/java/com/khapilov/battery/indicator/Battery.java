@@ -7,6 +7,7 @@ package com.khapilov.battery.indicator;
 public class Battery {
     private final String name;
     private final String ipAddress;
+    private int percentCharging = 100;
 
     public Battery(String name, String ipAddress) {
         this.name = name;
@@ -19,5 +20,13 @@ public class Battery {
 
     public String getIpAddress() {
         return ipAddress;
+    }
+
+    public int getPercentCharging() {
+        return percentCharging;
+    }
+
+    public void setPercentCharging(int percentCharging) {
+        this.percentCharging = percentCharging;
     }
 }
