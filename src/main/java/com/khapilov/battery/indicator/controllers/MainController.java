@@ -57,27 +57,32 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        armBatteryController.bindData(new Battery("ARM", "192.168.1.1"));
+        //Батарея АРМ
+        Battery arm = new Battery("ARM", "192.168.1.1", armBatteryController);
 
-        Battery rtr1 = new Battery("RTR1", "192.168.1.12");
+        //Батареи RTR
+        Battery rtr1 = new Battery("RTR1", "192.168.1.12", rtr1BatteryController);
         rtr1.setPercentCharging(50);
-        rtr1BatteryController.bindData(rtr1);
-        rtr2BatteryController.bindData(new Battery("RTR2", "192.168.1.22"));
-        rtr3BatteryController.bindData(new Battery("RTR3", "192.168.1.32"));
-        rtr4BatteryController.bindData(new Battery("RTR4", "192.168.1.42"));
+        Battery rtr2 = new Battery("RTR2", "192.168.1.22", rtr2BatteryController);
+        rtr2.setPercentCharging(24);
+        Battery rtr3 = new Battery("RTR3", "192.168.1.32", rtr3BatteryController);
+        rtr3.setPercentCharging(10);
+        Battery rtr4 = new Battery("RTR4", "192.168.1.42", rtr4BatteryController);
 
-        cam1BatteryController.bindData(new Battery("CAM1", "192.168.1.13"));
-        cam2BatteryController.bindData(new Battery("CAM2", "192.168.1.23"));
-        cam3BatteryController.bindData(new Battery("CAM3", "192.168.1.33"));
-        cam4BatteryController.bindData(new Battery("CAM4", "192.168.1.43"));
+        //Батареи CAM
+        Battery cam1 = new Battery("CAM1", "192.168.1.13", cam1BatteryController);
+        Battery cam2 = new Battery("CAM2", "192.168.1.23", cam2BatteryController);
+        Battery cam3 = new Battery("CAM3", "192.168.1.33", cam3BatteryController);
+        Battery cam4 = new Battery("CAM4", "192.168.1.43", cam4BatteryController);
+
 
         armBatteryController.turnOn();
 
 
-        Thread thread = new Thread(() -> {
-            while (true) {
+        TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
                 try {
-                    Thread.sleep(2_000); // Пауза 2 сек
                     Enumeration<NetworkInterface> nets = NetworkInterface.getNetworkInterfaces();
                     for (NetworkInterface netint : Collections.list(nets))
                         checkAvailableInterfaceInformation(netint);
@@ -85,10 +90,9 @@ public class MainController implements Initializable {
                     e.printStackTrace();
                 }
             }
-        });
-        thread.setDaemon(true);
-        thread.start();
-
+        };
+        Timer timer = new Timer(true);
+        timer.scheduleAtFixedRate(timerTask, 1_000, 2_000);
     }
 
     //TODO Идея попробовать через таймер вычитывать из подключенных батарей каждые N время процент заряда

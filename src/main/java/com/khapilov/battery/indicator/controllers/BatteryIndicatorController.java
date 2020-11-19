@@ -4,8 +4,6 @@ import com.khapilov.battery.indicator.App;
 import com.khapilov.battery.indicator.Battery;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ContextMenu;
@@ -14,7 +12,6 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.layout.AnchorPane;
 
 import java.net.URL;
@@ -25,32 +22,6 @@ import java.util.ResourceBundle;
  * @version 1.0 18.11.2020
  */
 public class BatteryIndicatorController implements Initializable {
-    private enum BarColor {
-        RED_BAR("red-bar"),
-        YELLOW_BAR("yellow-bar"),
-        ORANGE_BAR("orange-bar"),
-        GREEN_BAR("green-bar");
-
-        private static String[] all;
-
-        BarColor(String ccs) {
-            this.ccs = ccs;
-        }
-
-        public static String[] getAll() {
-            if (all == null) {
-                BarColor[] colors = BarColor.values();
-                all = new String[colors.length];
-                for (int i = 0; i < all.length; i++) {
-                    all[i] = colors[i].ccs;
-                }
-            }
-            return all;
-        }
-
-        final String ccs;
-    }
-
     @FXML
     private AnchorPane pane;
     @FXML
@@ -63,7 +34,7 @@ public class BatteryIndicatorController implements Initializable {
     private Label batteryPercent;
 
     private Battery battery;
-
+    private boolean isActive;
     private static final Image onImage = new Image(App.class.getResource("icon/green-button.png").toString(), true);
     private static final Image offImage = new Image(App.class.getResource("icon/red-button.png").toString(), true);
 
@@ -78,7 +49,6 @@ public class BatteryIndicatorController implements Initializable {
             if (battery != null) {
                 System.out.println("Обновление данных батареи " + battery.getName());
                 battery.setPercentCharging(100);
-                update();
             }
         });
         contextMenu.getItems().add(item);
@@ -113,16 +83,44 @@ public class BatteryIndicatorController implements Initializable {
         update();
     }
 
-    private void update() {
+    public void update() {
         progressBar.setProgress((double) battery.getPercentCharging() / 100);
         batteryPercent.setText(battery.getPercentCharging() + "%");
     }
 
     public void turnOn() {
+        isActive = true;
         indicatorImage.setImage(onImage);
     }
 
     public void turnOff() {
+        isActive = false;
         indicatorImage.setImage(offImage);
+    }
+
+    private enum BarColor {
+        RED_BAR("red-bar"),
+        YELLOW_BAR("yellow-bar"),
+        ORANGE_BAR("orange-bar"),
+        GREEN_BAR("green-bar");
+
+        private static String[] all;
+
+        BarColor(String ccs) {
+            this.ccs = ccs;
+        }
+
+        public static String[] getAll() {
+            if (all == null) {
+                BarColor[] colors = BarColor.values();
+                all = new String[colors.length];
+                for (int i = 0; i < all.length; i++) {
+                    all[i] = colors[i].ccs;
+                }
+            }
+            return all;
+        }
+
+        final String ccs;
     }
 }
