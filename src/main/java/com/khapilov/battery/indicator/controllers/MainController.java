@@ -5,10 +5,9 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
-import org.xbill.DNS.ResolverConfig;
 
+import java.io.IOException;
 import java.net.InetAddress;
-import java.net.InetSocketAddress;
 import java.net.NetworkInterface;
 import java.net.URL;
 import java.util.*;
@@ -67,7 +66,7 @@ public class MainController implements Initializable {
         batteryList.add(arm);
 
         //Батареи RTR
-        Battery rtr1 = new Battery("RTR1", "127.0.0.1", rtr1BatteryController);
+        Battery rtr1 = new Battery("RTR1", "192.168.1.12", rtr1BatteryController);
         rtr1.setPercentCharging(50);
         Battery rtr2 = new Battery("RTR2", "192.168.1.22", rtr2BatteryController);
         rtr2.setPercentCharging(24);
@@ -94,28 +93,24 @@ public class MainController implements Initializable {
             @Override
             public void run() {
                 try {
-                    Set<String> availableHosts = new HashSet<>();
-                    List<InetSocketAddress> dnsServers = ResolverConfig.getCurrentConfig().servers();
-                    for (InetSocketAddress dns : dnsServers) {
-                        System.out.println(dns.getAddress().getHostAddress());
-                        availableHosts.add(dns.getAddress().getHostAddress());
-                    }
-//                    Enumeration<NetworkInterface> nets = NetworkInterface.getNetworkInterfaces();
-//                    for (NetworkInterface netint : Collections.list(nets)) {
-//                        checkAvailableInterfaceInformation(netint, availableHosts);
-//                    }
-
-                    System.out.println("Available ip size " + availableHosts.size());
-
                     for (Battery bat : batteryList) {
                         System.out.println(bat.getIpAddress());
-                        if (availableHosts.contains(bat.getIpAddress())) {
-                            Platform.runLater(bat::turnOn);
-                            System.out.println("contains");
-                        } else {
-                            Platform.runLater(bat::turnOff);
-                            System.out.println("false");
-                        }
+                        InetAddress address = InetAddress.getByName(bat.getIpAddress());
+
+                        new Thread(()->{
+                            try {
+                                if (address.isReachable(1000)) {
+                                    Platform.runLater(bat::turnOn);
+                                    System.out.println("contains");
+                                } else {
+                                    Platform.runLater(bat::turnOff);
+                                    System.out.println("false");
+                                }
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }).start();
+
                         Platform.runLater(() -> bat.changeTimer(2_000));
                     }
 
