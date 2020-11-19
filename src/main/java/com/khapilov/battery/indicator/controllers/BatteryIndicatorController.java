@@ -1,5 +1,6 @@
 package com.khapilov.battery.indicator.controllers;
 
+import com.khapilov.battery.indicator.App;
 import com.khapilov.battery.indicator.Battery;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -42,8 +43,8 @@ public class BatteryIndicatorController implements Initializable {
 
     private Battery battery;
 
-    private static final Image onImage = new Image("src/main/resources/com/khapilov/battery/indicator/icon/green-button.png");
-    private static final Image offImage = new Image("src/main/resources/com/khapilov/battery/indicator/icon/red-button.png");
+    private static final Image onImage = new Image(App.class.getResource("icon/green-button.png").toString(),true);
+    private static final Image offImage = new Image(App.class.getResource("icon/red-button.png").toString(),true);
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
