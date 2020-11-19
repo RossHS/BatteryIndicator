@@ -1,6 +1,7 @@
 package com.khapilov.battery.indicator.controllers;
 
 import com.khapilov.battery.indicator.Battery;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
@@ -55,10 +56,13 @@ public class MainController implements Initializable {
     @FXML
     private BatteryIndicatorController cam4BatteryController;
 
+    private List<Battery> batteryList = new ArrayList<>();
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //Батарея АРМ
-        Battery arm = new Battery("ARM", "192.168.1.1", armBatteryController);
+        Battery arm = new Battery("ARM", "127.0.0.1", armBatteryController);
+        batteryList.add(arm);
 
         //Батареи RTR
         Battery rtr1 = new Battery("RTR1", "192.168.1.12", rtr1BatteryController);
@@ -68,39 +72,61 @@ public class MainController implements Initializable {
         Battery rtr3 = new Battery("RTR3", "192.168.1.32", rtr3BatteryController);
         rtr3.setPercentCharging(10);
         Battery rtr4 = new Battery("RTR4", "192.168.1.42", rtr4BatteryController);
+        batteryList.add(rtr1);
+        batteryList.add(rtr2);
+        batteryList.add(rtr3);
+        batteryList.add(rtr4);
 
         //Батареи CAM
         Battery cam1 = new Battery("CAM1", "192.168.1.13", cam1BatteryController);
         Battery cam2 = new Battery("CAM2", "192.168.1.23", cam2BatteryController);
         Battery cam3 = new Battery("CAM3", "192.168.1.33", cam3BatteryController);
         Battery cam4 = new Battery("CAM4", "192.168.1.43", cam4BatteryController);
-
-
-        armBatteryController.turnOn();
+        batteryList.add(cam1);
+        batteryList.add(cam2);
+        batteryList.add(cam3);
+        batteryList.add(cam4);
 
 
         TimerTask timerTask = new TimerTask() {
             @Override
             public void run() {
                 try {
+                    Set<String> availableHosts = new HashSet<>();
                     Enumeration<NetworkInterface> nets = NetworkInterface.getNetworkInterfaces();
-                    for (NetworkInterface netint : Collections.list(nets))
-                        checkAvailableInterfaceInformation(netint);
+                    for (NetworkInterface netint : Collections.list(nets)) {
+                        checkAvailableInterfaceInformation(netint, availableHosts);
+                    }
+
+                    System.out.println("Available ip size " + availableHosts.size());
+
+                    for (Battery bat : batteryList) {
+                        System.out.println(bat.getIpAddress());
+                        if (availableHosts.contains(bat.getIpAddress())) {
+                            Platform.runLater(bat::turnOn);
+                            System.out.println("contains");
+                        } else {
+                            Platform.runLater(bat::turnOff);
+                            System.out.println("false");
+                        }
+                        Platform.runLater(() -> bat.changeTimer(2_000));
+                    }
+
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         };
         Timer timer = new Timer(true);
-        timer.scheduleAtFixedRate(timerTask, 1_000, 2_000);
+        timer.scheduleAtFixedRate(timerTask, 2_000, 2_000);
     }
 
     //TODO Идея попробовать через таймер вычитывать из подключенных батарей каждые N время процент заряда
     //TODO доделать реакцию на ip адреса
-    private static void checkAvailableInterfaceInformation(NetworkInterface netInt) {
+    private static void checkAvailableInterfaceInformation(NetworkInterface netInt, Set<String> availableHosts) {
 //        System.out.printf("Display name: %s\n", netInt.getDisplayName());
 //        System.out.printf("Name: %s\n", netInt.getName());
-        Set<String> availableHosts = new HashSet<>();
 
         Enumeration<InetAddress> inetAddresses = netInt.getInetAddresses();
         for (InetAddress inetAddress : Collections.list(inetAddresses)) {
@@ -108,7 +134,5 @@ public class MainController implements Initializable {
             System.out.println("InetAddress - " + inetAddress.getHostAddress());
             availableHosts.add(inetAddress.getHostAddress());
         }
-
-
     }
 }

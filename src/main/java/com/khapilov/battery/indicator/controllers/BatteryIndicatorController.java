@@ -48,7 +48,7 @@ public class BatteryIndicatorController implements Initializable {
         item.setOnAction(actionEvent -> {
             if (battery != null) {
                 System.out.println("Обновление данных батареи " + battery.getName());
-                battery.setPercentCharging(100);
+                battery.reset();
             }
         });
         contextMenu.getItems().add(item);
@@ -84,18 +84,25 @@ public class BatteryIndicatorController implements Initializable {
     }
 
     public void update() {
-        progressBar.setProgress((double) battery.getPercentCharging() / 100);
-        batteryPercent.setText(battery.getPercentCharging() + "%");
+        if (isActive) {
+            System.out.println("UPDATE");
+            progressBar.setProgress((double) battery.getPercentCharging() / 100);
+            batteryPercent.setText(battery.getPercentCharging() + "%");
+        }
     }
 
     public void turnOn() {
-        isActive = true;
-        indicatorImage.setImage(onImage);
+        if (!isActive) {
+            isActive = true;
+            indicatorImage.setImage(onImage);
+        }
     }
 
     public void turnOff() {
-        isActive = false;
-        indicatorImage.setImage(offImage);
+        if (isActive) {
+            isActive = false;
+            indicatorImage.setImage(offImage);
+        }
     }
 
     private enum BarColor {
