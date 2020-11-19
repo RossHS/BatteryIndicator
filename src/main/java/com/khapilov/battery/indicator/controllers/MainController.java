@@ -5,8 +5,9 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
+import org.xbill.DNS.ResolverConfig;
 
-import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.NetworkInterface;
 import java.net.URL;
 import java.util.*;
@@ -61,11 +62,11 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //Батарея АРМ
-        Battery arm = new Battery("ARM", "127.0.0.1", armBatteryController);
+        Battery arm = new Battery("ARM", "192.168.1.1", armBatteryController);
         batteryList.add(arm);
 
         //Батареи RTR
-        Battery rtr1 = new Battery("RTR1", "192.168.1.12", rtr1BatteryController);
+        Battery rtr1 = new Battery("RTR1", "127.0.0.1", rtr1BatteryController);
         rtr1.setPercentCharging(50);
         Battery rtr2 = new Battery("RTR2", "192.168.1.22", rtr2BatteryController);
         rtr2.setPercentCharging(24);
@@ -127,12 +128,17 @@ public class MainController implements Initializable {
     private static void checkAvailableInterfaceInformation(NetworkInterface netInt, Set<String> availableHosts) {
 //        System.out.printf("Display name: %s\n", netInt.getDisplayName());
 //        System.out.printf("Name: %s\n", netInt.getName());
-
-        Enumeration<InetAddress> inetAddresses = netInt.getInetAddresses();
-        for (InetAddress inetAddress : Collections.list(inetAddresses)) {
-            System.out.println("Display name - " + netInt.getDisplayName());
-            System.out.println("InetAddress - " + inetAddress.getHostAddress());
-            availableHosts.add(inetAddress.getHostAddress());
+        List<InetSocketAddress> dnsServers = ResolverConfig.getCurrentConfig().servers();
+        for (InetSocketAddress dns: dnsServers){
+            System.out.println(dns.getAddress().getHostAddress());
         }
+
+//        Enumeration<InetAddress> inetAddresses = netInt.getInetAddresses();
+//        for (InetAddress inetAddress : Collections.list(inetAddresses)) {
+//            System.out.println("Display name - " + netInt.getDisplayName());
+//            System.out.println("InetAddress - " + inetAddress.getHostAddress());
+//            availableHosts.add(inetAddress.getHostAddress());
+//            System.out.println(inetAddress.getHostName());
+//        }
     }
 }
