@@ -99,7 +99,7 @@ public class MainController implements Initializable {
 
                         new Thread(()->{
                             try {
-                                if (address.isReachable(1000)) {
+                                if (address.isReachable(3_000)) {
                                     Platform.runLater(bat::turnOn);
                                     System.out.println("contains");
                                 } else {
@@ -111,7 +111,7 @@ public class MainController implements Initializable {
                             }
                         }).start();
 
-                        Platform.runLater(() -> bat.changeTimer(2_000));
+                        Platform.runLater(() -> bat.changeTimer(5_000));
                     }
 
 
@@ -121,7 +121,7 @@ public class MainController implements Initializable {
             }
         };
         Timer timer = new Timer(true);
-        timer.scheduleAtFixedRate(timerTask, 2_000, 2_000);
+        timer.scheduleAtFixedRate(timerTask, 2_000, 5_000);
     }
 
     //TODO Идея попробовать через таймер вычитывать из подключенных батарей каждые N время процент заряда
