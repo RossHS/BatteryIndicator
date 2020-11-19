@@ -7,6 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
 import org.xbill.DNS.ResolverConfig;
 
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.NetworkInterface;
 import java.net.URL;
@@ -94,10 +95,15 @@ public class MainController implements Initializable {
             public void run() {
                 try {
                     Set<String> availableHosts = new HashSet<>();
-                    Enumeration<NetworkInterface> nets = NetworkInterface.getNetworkInterfaces();
-                    for (NetworkInterface netint : Collections.list(nets)) {
-                        checkAvailableInterfaceInformation(netint, availableHosts);
+                    List<InetSocketAddress> dnsServers = ResolverConfig.getCurrentConfig().servers();
+                    for (InetSocketAddress dns : dnsServers) {
+                        System.out.println(dns.getAddress().getHostAddress());
+                        availableHosts.add(dns.getAddress().getHostAddress());
                     }
+//                    Enumeration<NetworkInterface> nets = NetworkInterface.getNetworkInterfaces();
+//                    for (NetworkInterface netint : Collections.list(nets)) {
+//                        checkAvailableInterfaceInformation(netint, availableHosts);
+//                    }
 
                     System.out.println("Available ip size " + availableHosts.size());
 
@@ -126,19 +132,16 @@ public class MainController implements Initializable {
     //TODO Идея попробовать через таймер вычитывать из подключенных батарей каждые N время процент заряда
     //TODO доделать реакцию на ip адреса
     private static void checkAvailableInterfaceInformation(NetworkInterface netInt, Set<String> availableHosts) {
-//        System.out.printf("Display name: %s\n", netInt.getDisplayName());
-//        System.out.printf("Name: %s\n", netInt.getName());
-        List<InetSocketAddress> dnsServers = ResolverConfig.getCurrentConfig().servers();
-        for (InetSocketAddress dns: dnsServers){
-            System.out.println(dns.getAddress().getHostAddress());
-        }
+        System.out.printf("Display name: %s\n", netInt.getDisplayName());
+        System.out.printf("Name: %s\n", netInt.getName());
 
-//        Enumeration<InetAddress> inetAddresses = netInt.getInetAddresses();
-//        for (InetAddress inetAddress : Collections.list(inetAddresses)) {
-//            System.out.println("Display name - " + netInt.getDisplayName());
-//            System.out.println("InetAddress - " + inetAddress.getHostAddress());
-//            availableHosts.add(inetAddress.getHostAddress());
-//            System.out.println(inetAddress.getHostName());
-//        }
+
+        Enumeration<InetAddress> inetAddresses = netInt.getInetAddresses();
+        for (InetAddress inetAddress : Collections.list(inetAddresses)) {
+            System.out.println("Display name - " + netInt.getDisplayName());
+            System.out.println("InetAddress - " + inetAddress.getHostAddress());
+            availableHosts.add(inetAddress.getHostAddress());
+            System.out.println(inetAddress.getHostName());
+        }
     }
 }
