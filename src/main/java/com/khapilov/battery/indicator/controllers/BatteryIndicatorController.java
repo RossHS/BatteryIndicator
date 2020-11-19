@@ -4,12 +4,18 @@ import com.khapilov.battery.indicator.App;
 import com.khapilov.battery.indicator.Battery;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ContextMenuEvent;
+import javafx.scene.layout.AnchorPane;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -25,13 +31,28 @@ public class BatteryIndicatorController implements Initializable {
         ORANGE_BAR("orange-bar"),
         GREEN_BAR("green-bar");
 
+        private static String[] all;
+
         BarColor(String ccs) {
             this.ccs = ccs;
+        }
+
+        public static String[] getAll() {
+            if (all == null) {
+                BarColor[] colors = BarColor.values();
+                all = new String[colors.length];
+                for (int i = 0; i < all.length; i++) {
+                    all[i] = colors[i].ccs;
+                }
+            }
+            return all;
         }
 
         final String ccs;
     }
 
+    @FXML
+    private AnchorPane pane;
     @FXML
     private ImageView indicatorImage;
     @FXML
@@ -43,14 +64,25 @@ public class BatteryIndicatorController implements Initializable {
 
     private Battery battery;
 
-    private static final Image onImage = new Image(App.class.getResource("icon/green-button.png").toString(),true);
-    private static final Image offImage = new Image(App.class.getResource("icon/red-button.png").toString(),true);
+    private static final Image onImage = new Image(App.class.getResource("icon/green-button.png").toString(), true);
+    private static final Image offImage = new Image(App.class.getResource("icon/red-button.png").toString(), true);
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 //        DropShadow ds = new DropShadow(15, Color.GREEN);
 //        ds.setInput(new Glow(0.5));
 //        progressBar.setEffect(ds);
+        ContextMenu contextMenu = new ContextMenu();
+        MenuItem item = new MenuItem("Обновить данные");
+        item.setOnAction(actionEvent -> {
+            if (battery != null) {
+                System.out.println("Обновление данных батареи " + battery.getName());
+                battery.setPercentCharging(100);
+                update();
+            }
+        });
+        contextMenu.getItems().add(item);
+        pane.setOnContextMenuRequested(event -> contextMenu.show(pane, event.getScreenX(), event.getScreenY()));
 
         progressBar.progressProperty().addListener(new ChangeListener<>() {
             @Override
@@ -68,7 +100,7 @@ public class BatteryIndicatorController implements Initializable {
             }
 
             private void setBarStyleClass(ProgressBar bar, BarColor barColor) {
-                bar.getStyleClass().removeAll();
+                bar.getStyleClass().removeAll(BarColor.getAll());
                 bar.getStyleClass().add(barColor.ccs);
             }
         });
