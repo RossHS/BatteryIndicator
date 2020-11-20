@@ -58,7 +58,7 @@ public class MainController implements Initializable {
     private BatteryIndicatorController cam4BatteryController;
 
     private final List<Battery> batteryList = new ArrayList<>();
-    private static final File propertyFile = new File(System.getProperty("user.home")+"/batt.properties");
+    private static final File propertyFile = new File(System.getProperty("user.home") + "/batt.properties");
     public static final Properties prop = new Properties();
 
     @Override
