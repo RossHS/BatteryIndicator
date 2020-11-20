@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -17,6 +18,9 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
+        Image image = new Image(App.class.getResource("icon/bat_ind.png").toString());
+        stage.getIcons().add(image);
+        stage.setTitle("Battery Indicator");
         scene = new Scene(loadFXML("main"));
         //Сглаживание текста
         System.setProperty("prism.lcdtext", "false");
