@@ -68,11 +68,8 @@ public class MainController implements Initializable {
 
         //Батареи RTR
         Battery rtr1 = new Battery("RTR1", "192.168.1.12", 36, rtr1BatteryController);
-        rtr1.setPercentCharging(50);
         Battery rtr2 = new Battery("RTR2", "192.168.1.22", 37, rtr2BatteryController);
-        rtr2.setPercentCharging(24);
         Battery rtr3 = new Battery("RTR3", "192.168.1.32", 35, rtr3BatteryController);
-        rtr3.setPercentCharging(10);
         Battery rtr4 = new Battery("RTR4", "192.168.1.42", 35.5, rtr4BatteryController);
         batteryList.add(rtr1);
         batteryList.add(rtr2);
@@ -80,10 +77,10 @@ public class MainController implements Initializable {
         batteryList.add(rtr4);
 
         //Батареи CAM
-        Battery cam1 = new Battery("CAM1", "192.168.1.13", 30, cam1BatteryController);
-        Battery cam2 = new Battery("CAM2", "192.168.1.23", 34, cam2BatteryController);
-        Battery cam3 = new Battery("CAM3", "192.168.1.33", 31, cam3BatteryController);
-        Battery cam4 = new Battery("CAM4", "192.168.1.43", 32, cam4BatteryController);
+        Battery cam1 = new Battery("CAM1", "192.168.1.101", 30, cam1BatteryController);
+        Battery cam2 = new Battery("CAM2", "192.168.1.102", 34, cam2BatteryController);
+        Battery cam3 = new Battery("CAM3", "192.168.1.103", 31, cam3BatteryController);
+        Battery cam4 = new Battery("CAM4", "192.168.1.104", 32, cam4BatteryController);
         batteryList.add(cam1);
         batteryList.add(cam2);
         batteryList.add(cam3);
