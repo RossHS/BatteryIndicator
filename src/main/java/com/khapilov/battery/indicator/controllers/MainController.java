@@ -8,7 +8,6 @@ import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.NetworkInterface;
 import java.net.URL;
 import java.util.*;
 
@@ -122,21 +121,5 @@ public class MainController implements Initializable {
         };
         Timer timer = new Timer(true);
         timer.scheduleAtFixedRate(timerTask, 2_000, 5_000);
-    }
-
-    //TODO Идея попробовать через таймер вычитывать из подключенных батарей каждые N время процент заряда
-    //TODO доделать реакцию на ip адреса
-    private static void checkAvailableInterfaceInformation(NetworkInterface netInt, Set<String> availableHosts) {
-        System.out.printf("Display name: %s\n", netInt.getDisplayName());
-        System.out.printf("Name: %s\n", netInt.getName());
-
-
-        Enumeration<InetAddress> inetAddresses = netInt.getInetAddresses();
-        for (InetAddress inetAddress : Collections.list(inetAddresses)) {
-            System.out.println("Display name - " + netInt.getDisplayName());
-            System.out.println("InetAddress - " + inetAddress.getHostAddress());
-            availableHosts.add(inetAddress.getHostAddress());
-            System.out.println(inetAddress.getHostName());
-        }
     }
 }
