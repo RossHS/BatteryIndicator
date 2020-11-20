@@ -58,8 +58,8 @@ public class MainController implements Initializable {
     private BatteryIndicatorController cam4BatteryController;
 
     private final List<Battery> batteryList = new ArrayList<>();
-    private final File propertyFile = new File("batt.properties");
-    private final Properties prop = new Properties();
+    private static final File propertyFile = new File("batt.properties");
+    public static final Properties prop = new Properties();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -128,8 +128,7 @@ public class MainController implements Initializable {
             try (OutputStream out = new FileOutputStream(propertyFile)) {
                 for (Battery battery : batteryList) {
                     //Сохранение расчетного времени разр
-                    prop.setProperty(battery.getName() + ".time",
-                            LocalDateTime.now().plus(battery.getChargeSec(), ChronoUnit.MILLIS).toString());
+                    setPropertyTime(battery);
                 }
                 prop.store(out, null);
             } catch (IOException e) {
@@ -148,5 +147,19 @@ public class MainController implements Initializable {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static void updatePropertyFile(Battery battery) {
+        if (!propertyFile.exists()) return;
+        try (OutputStream out = new FileOutputStream(propertyFile)) {
+            setPropertyTime(battery);
+            prop.store(out, null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void setPropertyTime(Battery battery) {
+        prop.setProperty(battery.getName() + ".time", LocalDateTime.now().plus(battery.getChargeSec(), ChronoUnit.MILLIS).toString());
     }
 }

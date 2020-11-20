@@ -1,6 +1,7 @@
 package com.khapilov.battery.indicator;
 
 import com.khapilov.battery.indicator.controllers.BatteryIndicatorController;
+import com.khapilov.battery.indicator.controllers.MainController;
 
 /**
  * @author Ross Khapilov
@@ -68,6 +69,7 @@ public class Battery {
     public void reset() {
         currentSec = chargeSec;
         percentCharging = 100;
+        MainController.updatePropertyFile(this);
         controller.update();
     }
 }
