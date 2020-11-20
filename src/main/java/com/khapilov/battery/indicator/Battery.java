@@ -10,7 +10,7 @@ public class Battery {
     private final String name;
     private final String ipAddress;
     private int percentCharging = 100;
-    private long chargeSec;
+    private final long chargeSec;
     private long currentSec;
     private final BatteryIndicatorController controller;
 
@@ -18,7 +18,6 @@ public class Battery {
         this.name = name;
         this.ipAddress = ipAddress;
         this.chargeSec = (long) (chargeH * 60 * 60 * 1000);
-        System.out.println(name + " " + chargeSec);
         currentSec = chargeSec;
         this.controller = controller;
         controller.bindData(this);
@@ -39,6 +38,14 @@ public class Battery {
     public void setPercentCharging(int percentCharging) {
         this.percentCharging = percentCharging;
         controller.update();
+    }
+
+    public long getChargeSec() {
+        return chargeSec;
+    }
+
+    public void setCurrentSec(long currentSec) {
+        this.currentSec = currentSec;
     }
 
     public void turnOn() {

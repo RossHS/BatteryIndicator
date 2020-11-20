@@ -6,9 +6,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.InetAddress;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 /**
@@ -56,7 +58,7 @@ public class MainController implements Initializable {
     @FXML
     private BatteryIndicatorController cam4BatteryController;
 
-    private List<Battery> batteryList = new ArrayList<>();
+    private final List<Battery> batteryList = new ArrayList<>();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -86,6 +88,36 @@ public class MainController implements Initializable {
         batteryList.add(cam2);
         batteryList.add(cam3);
         batteryList.add(cam4);
+
+        //Файл с настройками
+        File propertyFile = new File("batt.properties");
+        if (!propertyFile.exists()) {
+            // Если файла с настройками нет, то создаем его
+            try (OutputStream out = new FileOutputStream(propertyFile)) {
+                Properties prop = new Properties();
+                for (Battery battery : batteryList) {
+                    //Сохранение расчетного времени разр
+                    prop.setProperty(battery.getName() + ".time",
+                            LocalDateTime.now().plus(battery.getChargeSec(), ChronoUnit.MILLIS).toString());
+                }
+                prop.store(out, null);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        } else {
+            // Если файла с настройками есть, то считываем его
+            try (InputStream input = new FileInputStream(propertyFile)) {
+                Properties prop = new Properties();
+                prop.load(input);
+                for (Battery battery : batteryList) {
+                    LocalDateTime localDateTimeCalc = LocalDateTime.parse(prop.get(battery.getName() + ".time").toString());
+                    battery.setCurrentSec(ChronoUnit.MILLIS.between(LocalDateTime.now(), localDateTimeCalc));
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
 
         TimerTask timerTask = new TimerTask() {
