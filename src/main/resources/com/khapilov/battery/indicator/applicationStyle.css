@@ -9,6 +9,28 @@
     -fx-background-color: #4f4f4f;
 }
 
+.tool-bar {
+    -fx-background-color: rgba(255, 255, 255, 0);
+    -fx-padding: 0px;
+    -fx-spacing: 0px;
+}
+
+#close-button {
+    -fx-background-color: transparent;
+}
+
+#close-button:hover {
+    -fx-background-color: red;
+}
+
+#minimize-button {
+    -fx-background-color: transparent;
+}
+
+#minimize-button:hover {
+    -fx-background-color: #5b5858;
+}
+
 .green-bar {
     -fx-accent: #07cd07;
 }
