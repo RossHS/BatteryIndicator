@@ -6,7 +6,13 @@
 }
 
 #main {
-    -fx-background-color: #4f4f4f;
+    -fx-padding: 12;
+    -fx-spacing: 10;
+    -fx-alignment: center;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.8), 15, 0, 0, 0);
+    -fx-background-insets: 12;
+    -fx-background-color:  rgba(79, 79, 79, 0.6);
+    -fx-background-radius: 10;
 }
 
 .tool-bar {
