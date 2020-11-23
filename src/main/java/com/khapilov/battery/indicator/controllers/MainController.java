@@ -1,5 +1,6 @@
 package com.khapilov.battery.indicator.controllers;
 
+import com.khapilov.battery.indicator.App;
 import com.khapilov.battery.indicator.Battery;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -147,6 +148,16 @@ public class MainController implements Initializable {
                 e.printStackTrace();
             }
         }
+    }
+
+    @FXML
+    private void closeButtonAction() {
+        App.getStage().close();
+    }
+
+    @FXML
+    private void minimizeButtonAction() {
+        App.getStage().setIconified(true);
     }
 
     public static void updatePropertyFile(Battery battery) {
