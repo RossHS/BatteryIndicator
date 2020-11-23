@@ -5,11 +5,12 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="main" onMousePressed="#mousePressedAction" onMouseDragged="#mouseDraggedAction"
+<AnchorPane id="main" onMouseDragged="#mouseDraggedAction" onMousePressed="#mousePressedAction"
             stylesheets="@applicationStyle.css" xmlns="http://javafx.com/javafx/11.0.1"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.khapilov.battery.indicator.controllers.MainController">
-    <VBox alignment="CENTER" fillWidth="false" spacing="15.0">
+    <VBox alignment="CENTER" fillWidth="false" spacing="15.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+          AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <fx:include fx:id="armBattery" source="battery_indicator.fxml" VBox.vgrow="NEVER"/>
         <HBox fillHeight="false" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
             <fx:include fx:id="rtr1Battery" source="battery_indicator.fxml"/>
