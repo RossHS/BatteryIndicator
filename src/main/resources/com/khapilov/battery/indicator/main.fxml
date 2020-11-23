@@ -5,7 +5,8 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="main" stylesheets="@applicationStyle.css" xmlns="http://javafx.com/javafx/11.0.1"
+<AnchorPane id="main" onMousePressed="#mousePressedAction" onMouseDragged="#mouseDraggedAction"
+            stylesheets="@applicationStyle.css" xmlns="http://javafx.com/javafx/11.0.1"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.khapilov.battery.indicator.controllers.MainController">
     <VBox alignment="CENTER" fillWidth="false" spacing="15.0">

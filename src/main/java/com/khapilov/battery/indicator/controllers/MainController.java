@@ -5,6 +5,7 @@ import com.khapilov.battery.indicator.Battery;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.*;
@@ -61,6 +62,8 @@ public class MainController implements Initializable {
     private final List<Battery> batteryList = new ArrayList<>();
     private static final File propertyFile = new File("C:\\Users\\User\\AppData\\Roaming\\batt.properties");
     public static final Properties prop = new Properties();
+    private double xOffset;
+    private double yOffset;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -158,6 +161,18 @@ public class MainController implements Initializable {
     @FXML
     private void minimizeButtonAction() {
         App.getStage().setIconified(true);
+    }
+
+    @FXML
+    private void mousePressedAction(MouseEvent event) {
+        xOffset = App.getStage().getX() - event.getScreenX();
+        yOffset = App.getStage().getY() - event.getScreenY();
+    }
+
+    @FXML
+    private void mouseDraggedAction(MouseEvent event) {
+        App.getStage().setX(event.getScreenX() + xOffset);
+        App.getStage().setY(event.getScreenY() + yOffset);
     }
 
     public static void updatePropertyFile(Battery battery) {
