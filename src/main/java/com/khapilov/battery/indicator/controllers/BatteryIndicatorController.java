@@ -80,6 +80,12 @@ public class BatteryIndicatorController implements Initializable {
         this.battery = battery;
         System.out.println(battery.getName() + "|" + battery.getIpAddress());
         batteryIndicatorName.setText(battery.getName());
+
+        //Удаляем невидимые элементы
+        if (!battery.isChargeVisible()) {
+            pane.getChildren().remove(batteryPercent);
+            pane.getChildren().remove(progressBar);
+        }
         update();
     }
 

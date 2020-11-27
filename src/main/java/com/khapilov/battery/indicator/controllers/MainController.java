@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -20,6 +21,11 @@ import java.util.*;
  * @version 1.0 18.11.2020
  */
 public class MainController implements Initializable {
+    @FXML
+    private AnchorPane main;
+    @FXML
+    private VBox vbox;
+
     @FXML
     private AnchorPane armBattery;
     @FXML
@@ -67,6 +73,9 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        //Связал размер основной сцены с размером контейнера
+        main.prefHeightProperty().bind(vbox.heightProperty());
+
         //Батарея АРМ
         Battery arm = new Battery("ARM", "192.168.1.1", 36.5, armBatteryController);
         batteryList.add(arm);
@@ -82,10 +91,10 @@ public class MainController implements Initializable {
         batteryList.add(rtr4);
 
         //Батареи CAM
-        Battery cam1 = new Battery("CAM1", "192.168.1.101", 30, cam1BatteryController);
-        Battery cam2 = new Battery("CAM2", "192.168.1.102", 34, cam2BatteryController);
-        Battery cam3 = new Battery("CAM3", "192.168.1.103", 31, cam3BatteryController);
-        Battery cam4 = new Battery("CAM4", "192.168.1.104", 32, cam4BatteryController);
+        Battery cam1 = new Battery("CAM1", "192.168.1.101", 30, cam1BatteryController, false);
+        Battery cam2 = new Battery("CAM2", "192.168.1.102", 34, cam2BatteryController, false);
+        Battery cam3 = new Battery("CAM3", "192.168.1.103", 31, cam3BatteryController, false);
+        Battery cam4 = new Battery("CAM4", "192.168.1.104", 32, cam4BatteryController, false);
         batteryList.add(cam1);
         batteryList.add(cam2);
         batteryList.add(cam3);

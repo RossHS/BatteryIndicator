@@ -14,13 +14,19 @@ public class Battery {
     private final long chargeSec;
     private long currentSec;
     private final BatteryIndicatorController controller;
+    private final boolean isChargeVisible;
 
     public Battery(String name, String ipAddress, double chargeH, BatteryIndicatorController controller) {
+        this(name, ipAddress, chargeH, controller, true);
+    }
+
+    public Battery(String name, String ipAddress, double chargeH, BatteryIndicatorController controller, boolean isChargeVisible) {
         this.name = name;
         this.ipAddress = ipAddress;
         this.chargeSec = (long) (chargeH * 60 * 60 * 1000);
         currentSec = chargeSec;
         this.controller = controller;
+        this.isChargeVisible = isChargeVisible;
         controller.bindData(this);
     }
 
@@ -47,6 +53,10 @@ public class Battery {
 
     public void setCurrentSec(long currentSec) {
         this.currentSec = currentSec;
+    }
+
+    public boolean isChargeVisible() {
+        return isChargeVisible;
     }
 
     public void turnOn() {
