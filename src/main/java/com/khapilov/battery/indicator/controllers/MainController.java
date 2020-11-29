@@ -9,12 +9,14 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
+import java.awt.*;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.List;
 
 /**
  * @author Ross Khapilov
@@ -67,6 +69,7 @@ public class MainController implements Initializable {
 
     private final List<Battery> batteryList = new ArrayList<>();
     private static final File propertyFile = new File("C:\\Users\\User\\AppData\\Roaming\\batt.properties");
+    public static final Runnable runnable = (Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.default");
     public static final Properties prop = new Properties();
     private double xOffset;
     private double yOffset;
@@ -170,6 +173,15 @@ public class MainController implements Initializable {
     @FXML
     private void minimizeButtonAction() {
         App.getStage().setIconified(true);
+    }
+
+    /**
+     * Воспроизводит звук и разворачивает окно при низком заряде и коннекте
+     */
+    public static void stagePopUpAction() {
+        runnable.run();
+        if (App.getStage().isIconified())
+            Platform.runLater(() -> App.getStage().setIconified(false));
     }
 
     @FXML

@@ -35,6 +35,7 @@ public class BatteryIndicatorController implements Initializable {
 
     private Battery battery;
     private boolean isActive;
+    private boolean beepReady; //Флаг для звукового сигнала
     private static final Image onImage = new Image(App.class.getResource("icon/green-button.png").toString(), true);
     private static final Image offImage = new Image(App.class.getResource("icon/red-button.png").toString(), true);
 
@@ -94,6 +95,12 @@ public class BatteryIndicatorController implements Initializable {
             System.out.println("UPDATE");
             progressBar.setProgress((double) battery.getPercentCharging() / 100);
             batteryPercent.setText(battery.getPercentCharging() + "%");
+
+            //Если флаг готов и заряд меньше 30 процентов
+            if (battery != null && beepReady && battery.getPercentCharging() <= 30) {
+                MainController.stagePopUpAction();
+                beepReady = false;
+            }
         }
     }
 
@@ -101,6 +108,7 @@ public class BatteryIndicatorController implements Initializable {
         if (!isActive) {
             isActive = true;
             indicatorImage.setImage(onImage);
+            beepReady = true;
         }
     }
 
@@ -108,6 +116,7 @@ public class BatteryIndicatorController implements Initializable {
         if (isActive) {
             isActive = false;
             indicatorImage.setImage(offImage);
+            beepReady = false;
         }
     }
 
