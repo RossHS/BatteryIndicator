@@ -49,6 +49,7 @@ public class BatteryIndicatorController implements Initializable {
         item.setOnAction(actionEvent -> {
             if (battery != null) {
                 System.out.println("Обновление данных батареи " + battery.getName());
+                beepReady = true;
                 battery.reset();
             }
         });
