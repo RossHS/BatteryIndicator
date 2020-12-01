@@ -73,6 +73,7 @@ public class Battery {
         currentSec -= sec;
         percentCharging = (int) (100 * currentSec / chargeSec);
         if (percentCharging < 0) percentCharging = 0;
+        else if (percentCharging >= 100) percentCharging = 99;
         controller.update();
     }
 
