@@ -97,8 +97,8 @@ public class BatteryIndicatorController implements Initializable {
             progressBar.setProgress((double) battery.getPercentCharging() / 100);
             batteryPercent.setText(battery.getPercentCharging() + "%");
 
-            //Если флаг готов и заряд меньше 30 процентов
-            if (battery != null && beepReady && battery.getPercentCharging() <= 10) {
+            //Если флаг готов и заряд меньше 15 процентов
+            if (battery != null && beepReady && battery.getPercentCharging() <= 15) {
                 MainController.stagePopUpAction();
                 beepReady = false;
             }
