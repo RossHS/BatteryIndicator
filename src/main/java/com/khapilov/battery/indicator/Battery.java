@@ -44,7 +44,14 @@ public class Battery {
 
     public void setPercentCharging(int percentCharging) {
         this.percentCharging = percentCharging;
+        System.out.println((double) percentCharging/100);
+        currentSec = (long) ((double) percentCharging / 100 * chargeSec);
+        System.out.println(currentSec);
         controller.update();
+    }
+
+    public long getCurrentSec() {
+        return currentSec;
     }
 
     public long getChargeSec() {

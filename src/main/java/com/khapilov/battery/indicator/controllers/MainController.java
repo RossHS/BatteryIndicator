@@ -15,8 +15,8 @@ import java.net.InetAddress;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 /**
  * @author Ross Khapilov
@@ -80,24 +80,24 @@ public class MainController implements Initializable {
         main.prefHeightProperty().bind(vbox.heightProperty());
 
         //Батарея АРМ
-        Battery arm = new Battery("ARM", "192.168.1.1", 36.5, armBatteryController);
+        Battery arm = new Battery("ARM", "192.168.1.1", 1, armBatteryController);
         batteryList.add(arm);
 
         //Батареи RTR
-        Battery rtr1 = new Battery("RTR1", "192.168.1.12", 36, rtr1BatteryController);
-        Battery rtr2 = new Battery("RTR2", "192.168.1.22", 37, rtr2BatteryController);
-        Battery rtr3 = new Battery("RTR3", "192.168.1.32", 35, rtr3BatteryController);
-        Battery rtr4 = new Battery("RTR4", "192.168.1.42", 35.5, rtr4BatteryController);
+        Battery rtr1 = new Battery("RTR1", "192.168.1.12", 130, rtr1BatteryController);
+        Battery rtr2 = new Battery("RTR2", "192.168.1.22", 135, rtr2BatteryController);
+        Battery rtr3 = new Battery("RTR3", "192.168.1.32", 137, rtr3BatteryController);
+        Battery rtr4 = new Battery("RTR4", "192.168.1.42", 128, rtr4BatteryController);
         batteryList.add(rtr1);
         batteryList.add(rtr2);
         batteryList.add(rtr3);
         batteryList.add(rtr4);
 
         //Батареи CAM
-        Battery cam1 = new Battery("CAM1", "192.168.1.101", 30, cam1BatteryController, false);
-        Battery cam2 = new Battery("CAM2", "192.168.1.102", 34, cam2BatteryController, false);
-        Battery cam3 = new Battery("CAM3", "192.168.1.103", 31, cam3BatteryController, false);
-        Battery cam4 = new Battery("CAM4", "192.168.1.104", 32, cam4BatteryController, false);
+        Battery cam1 = new Battery("CAM1", "192.168.1.101", 30, cam1BatteryController);
+        Battery cam2 = new Battery("CAM2", "192.168.1.102", 34, cam2BatteryController);
+        Battery cam3 = new Battery("CAM3", "192.168.1.103", 31, cam3BatteryController);
+        Battery cam4 = new Battery("CAM4", "192.168.1.104", 32, cam4BatteryController);
         batteryList.add(cam1);
         batteryList.add(cam2);
         batteryList.add(cam3);
@@ -156,8 +156,15 @@ public class MainController implements Initializable {
             try (InputStream input = new FileInputStream(propertyFile)) {
                 prop.load(input);
                 for (Battery battery : batteryList) {
-                    LocalDateTime localDateTimeCalc = LocalDateTime.parse(prop.get(battery.getName() + ".time").toString());
-                    battery.setCurrentSec(ChronoUnit.MILLIS.between(LocalDateTime.now(), localDateTimeCalc));
+                    //парсим сохр заряд
+                    Object per = prop.get(battery.getName() + ".p");
+                    if (per != null) {
+                        battery.setPercentCharging(Integer.parseInt(prop.get(battery.getName() + ".p").toString()));
+                        updatePropertyFile(battery);
+                    } else {
+                        LocalDateTime localDateTimeCalc = LocalDateTime.parse(prop.get(battery.getName() + ".time").toString());
+                        battery.setCurrentSec(ChronoUnit.MILLIS.between(LocalDateTime.now(), localDateTimeCalc));
+                    }
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -199,6 +206,7 @@ public class MainController implements Initializable {
     public static void updatePropertyFile(Battery battery) {
         if (!propertyFile.exists()) return;
         try (OutputStream out = new FileOutputStream(propertyFile)) {
+            prop.remove(battery.getName() + ".p");
             setPropertyTime(battery);
             prop.store(out, null);
         } catch (IOException e) {
@@ -207,6 +215,14 @@ public class MainController implements Initializable {
     }
 
     private static void setPropertyTime(Battery battery) {
-        prop.setProperty(battery.getName() + ".time", LocalDateTime.now().plus(battery.getChargeSec(), ChronoUnit.MILLIS).toString());
+        prop.setProperty(battery.getName() + ".time", LocalDateTime.now().plus(battery.getCurrentSec(), ChronoUnit.MILLIS).toString());
+    }
+
+    private static void setPropertyPercent(Battery battery) {
+        prop.setProperty(battery.getName() + ".p", String.valueOf(battery.getPercentCharging()));
+    }
+
+    private static void setPropertyPercent(Battery battery, int percent) {
+        prop.setProperty(battery.getName() + ".p", String.valueOf(percent));
     }
 }
