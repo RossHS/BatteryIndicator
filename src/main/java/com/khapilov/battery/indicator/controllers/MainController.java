@@ -5,9 +5,9 @@ import com.khapilov.battery.indicator.Battery;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 import java.awt.*;
 import java.io.*;
@@ -22,7 +22,7 @@ import java.util.*;
  * @author Ross Khapilov
  * @version 1.0 18.11.2020
  */
-public class MainController implements Initializable {
+public class MainController extends AbstractController implements Initializable {
     @FXML
     private AnchorPane main;
     @FXML
@@ -71,8 +71,6 @@ public class MainController implements Initializable {
     private static final File propertyFile = new File("C:\\Users\\User\\AppData\\Roaming\\batt.properties");
     public static final Runnable runnable = (Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.default");
     public static final Properties prop = new Properties();
-    private double xOffset;
-    private double yOffset;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -80,24 +78,24 @@ public class MainController implements Initializable {
         main.prefHeightProperty().bind(vbox.heightProperty());
 
         //Батарея АРМ
-        Battery arm = new Battery("ARM", "192.168.1.1", 1, armBatteryController);
+        Battery arm = new Battery("ARM", "127.0.0.1", 125, armBatteryController);
         batteryList.add(arm);
 
         //Батареи RTR
-        Battery rtr1 = new Battery("RTR1", "192.168.1.12", 130, rtr1BatteryController);
-        Battery rtr2 = new Battery("RTR2", "192.168.1.22", 135, rtr2BatteryController);
-        Battery rtr3 = new Battery("RTR3", "192.168.1.32", 137, rtr3BatteryController);
-        Battery rtr4 = new Battery("RTR4", "192.168.1.42", 128, rtr4BatteryController);
+        Battery rtr1 = new Battery("RTR1", "127.0.0.1", 130, rtr1BatteryController);
+        Battery rtr2 = new Battery("RTR2", "127.0.0.1", 135, rtr2BatteryController);
+        Battery rtr3 = new Battery("RTR3", "127.0.0.1", 137, rtr3BatteryController);
+        Battery rtr4 = new Battery("RTR4", "127.0.0.1", 128, rtr4BatteryController);
         batteryList.add(rtr1);
         batteryList.add(rtr2);
         batteryList.add(rtr3);
         batteryList.add(rtr4);
 
         //Батареи CAM
-        Battery cam1 = new Battery("CAM1", "192.168.1.101", 30, cam1BatteryController);
-        Battery cam2 = new Battery("CAM2", "192.168.1.102", 34, cam2BatteryController);
-        Battery cam3 = new Battery("CAM3", "192.168.1.103", 31, cam3BatteryController);
-        Battery cam4 = new Battery("CAM4", "192.168.1.104", 32, cam4BatteryController);
+        Battery cam1 = new Battery("CAM1", "127.0.0.1", 30, cam1BatteryController);
+        Battery cam2 = new Battery("CAM2", "127.0.0.1", 34, cam2BatteryController);
+        Battery cam3 = new Battery("CAM3", "127.0.0.1", 31, cam3BatteryController);
+        Battery cam4 = new Battery("CAM4", "127.0.0.1", 32, cam4BatteryController);
         batteryList.add(cam1);
         batteryList.add(cam2);
         batteryList.add(cam3);
@@ -172,16 +170,6 @@ public class MainController implements Initializable {
         }
     }
 
-    @FXML
-    private void closeButtonAction() {
-        App.getStage().close();
-    }
-
-    @FXML
-    private void minimizeButtonAction() {
-        App.getStage().setIconified(true);
-    }
-
     /**
      * Воспроизводит звук и разворачивает окно при низком заряде и коннекте
      */
@@ -189,18 +177,6 @@ public class MainController implements Initializable {
         runnable.run();
         if (App.getStage().isIconified())
             Platform.runLater(() -> App.getStage().setIconified(false));
-    }
-
-    @FXML
-    private void mousePressedAction(MouseEvent event) {
-        xOffset = App.getStage().getX() - event.getScreenX();
-        yOffset = App.getStage().getY() - event.getScreenY();
-    }
-
-    @FXML
-    private void mouseDraggedAction(MouseEvent event) {
-        App.getStage().setX(event.getScreenX() + xOffset);
-        App.getStage().setY(event.getScreenY() + yOffset);
     }
 
     public static void updatePropertyFile(Battery battery) {
@@ -224,5 +200,10 @@ public class MainController implements Initializable {
 
     private static void setPropertyPercent(Battery battery, int percent) {
         prop.setProperty(battery.getName() + ".p", String.valueOf(percent));
+    }
+
+    @Override
+    protected Stage getStage() {
+        return App.getStage();
     }
 }

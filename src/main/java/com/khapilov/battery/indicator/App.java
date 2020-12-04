@@ -2,7 +2,6 @@ package com.khapilov.battery.indicator;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -25,7 +24,7 @@ public class App extends Application {
         Image image = new Image(App.class.getResource("icon/bat_ind.png").toString());
         stage.getIcons().add(image);
         stage.setTitle("Battery Indicator");
-        scene = new Scene(loadFXML("main"));
+        scene = new Scene(loadFXML("main").load());
         stage.initStyle(StageStyle.TRANSPARENT);
         scene.setFill(Color.TRANSPARENT);
         //Сглаживание текста
@@ -39,12 +38,11 @@ public class App extends Application {
     }
 
     static void setRoot(String fxml) throws IOException {
-        scene.setRoot(loadFXML(fxml));
+        scene.setRoot(loadFXML(fxml).load());
     }
 
-    private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
-        return fxmlLoader.load();
+    public static FXMLLoader loadFXML(String fxml) throws IOException {
+        return new FXMLLoader(App.class.getResource(fxml + ".fxml"));
     }
 
     public static void main(String[] args) {

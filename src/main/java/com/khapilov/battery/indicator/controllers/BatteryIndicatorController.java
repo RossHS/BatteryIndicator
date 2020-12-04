@@ -2,6 +2,7 @@ package com.khapilov.battery.indicator.controllers;
 
 import com.khapilov.battery.indicator.App;
 import com.khapilov.battery.indicator.Battery;
+import com.khapilov.battery.indicator.views.VoltageWindow;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -45,15 +46,22 @@ public class BatteryIndicatorController implements Initializable {
 //        ds.setInput(new Glow(0.5));
 //        progressBar.setEffect(ds);
         ContextMenu contextMenu = new ContextMenu();
-        MenuItem item = new MenuItem("Обновить данные");
-        item.setOnAction(actionEvent -> {
+        MenuItem dataUpdate = new MenuItem("Обновить данные");
+        dataUpdate.setOnAction(actionEvent -> {
             if (battery != null) {
                 System.out.println("Обновление данных батареи " + battery.getName());
                 beepReady = true;
                 battery.reset();
             }
         });
-        contextMenu.getItems().add(item);
+        MenuItem calculateVoltage = new MenuItem("Ввести напряжение");
+        calculateVoltage.setOnAction(actionEvent -> {
+            if (battery != null) {
+                System.out.println("Открытие окна с вводом напряжения");
+                new VoltageWindow(battery);
+            }
+        });
+        contextMenu.getItems().addAll(calculateVoltage, dataUpdate);
         pane.setOnContextMenuRequested(event -> contextMenu.show(pane, event.getScreenX(), event.getScreenY()));
 
         progressBar.progressProperty().addListener(new ChangeListener<>() {

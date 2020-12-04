@@ -16,6 +16,9 @@ public class Battery {
     private final BatteryIndicatorController controller;
     private final boolean isChargeVisible;
 
+    private double minV = 14.8;
+    private double maxV = 16.8;
+
     public Battery(String name, String ipAddress, double chargeH, BatteryIndicatorController controller) {
         this(name, ipAddress, chargeH, controller, true);
     }
@@ -30,6 +33,12 @@ public class Battery {
         controller.bindData(this);
     }
 
+    public Battery(String name, String ipAddress, double chargeH, BatteryIndicatorController controller, double minVoltage, double maxVoltage) {
+        this(name, ipAddress, chargeH, controller, true);
+        this.minV = minVoltage;
+        this.maxV = maxVoltage;
+    }
+
     public String getName() {
         return name;
     }
@@ -38,13 +47,21 @@ public class Battery {
         return ipAddress;
     }
 
+    public double getMaxVoltage() {
+        return maxV;
+    }
+
+    public double getMinVoltage() {
+        return minV;
+    }
+
     public int getPercentCharging() {
         return percentCharging;
     }
 
     public void setPercentCharging(int percentCharging) {
         this.percentCharging = percentCharging;
-        System.out.println((double) percentCharging/100);
+        System.out.println((double) percentCharging / 100);
         currentSec = (long) ((double) percentCharging / 100 * chargeSec);
         System.out.println(currentSec);
         controller.update();
@@ -81,6 +98,14 @@ public class Battery {
         percentCharging = (int) (100 * currentSec / chargeSec);
         if (percentCharging < 0) percentCharging = 0;
         else if (percentCharging >= 100) percentCharging = 99;
+        controller.update();
+    }
+
+    public void saveVoltage(double inputV) {
+        int tempPercent = (int) (((inputV - minV) * 100) / (maxV - minV));
+        System.out.println("Расчетный процент " + tempPercent);
+        setPercentCharging(tempPercent);
+        MainController.updatePropertyFile(this);
         controller.update();
     }
 
