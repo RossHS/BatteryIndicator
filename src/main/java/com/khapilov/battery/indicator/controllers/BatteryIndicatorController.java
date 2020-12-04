@@ -46,7 +46,7 @@ public class BatteryIndicatorController implements Initializable {
 //        ds.setInput(new Glow(0.5));
 //        progressBar.setEffect(ds);
         ContextMenu contextMenu = new ContextMenu();
-        MenuItem dataUpdate = new MenuItem("Обновить данные");
+        MenuItem dataUpdate = new MenuItem("Замена АКБ");
         dataUpdate.setOnAction(actionEvent -> {
             if (battery != null) {
                 System.out.println("Обновление данных батареи " + battery.getName());
