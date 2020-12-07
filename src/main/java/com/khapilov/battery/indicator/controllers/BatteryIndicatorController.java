@@ -2,6 +2,7 @@ package com.khapilov.battery.indicator.controllers;
 
 import com.khapilov.battery.indicator.App;
 import com.khapilov.battery.indicator.Battery;
+import com.khapilov.battery.indicator.views.ChangeIPAddressAndNameWindow;
 import com.khapilov.battery.indicator.views.VoltageWindow;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -33,6 +34,8 @@ public class BatteryIndicatorController implements Initializable {
     private ProgressBar progressBar;
     @FXML
     private Label batteryPercent;
+    @FXML
+    private Label batteryIPAddress;
 
     private Battery battery;
     private boolean isActive;
@@ -54,6 +57,7 @@ public class BatteryIndicatorController implements Initializable {
                 battery.reset();
             }
         });
+
         MenuItem calculateVoltage = new MenuItem("Ввести напряжение");
         calculateVoltage.setOnAction(actionEvent -> {
             if (battery != null) {
@@ -61,7 +65,19 @@ public class BatteryIndicatorController implements Initializable {
                 new VoltageWindow(battery);
             }
         });
-        contextMenu.getItems().addAll(calculateVoltage, dataUpdate);
+
+        MenuItem changeBatteryNameAndAddress = new MenuItem("Сменить IP адрес");
+        changeBatteryNameAndAddress.setOnAction(actionEvent -> {
+            if (battery != null) {
+                System.out.println("Смена IP адреса и имени батареи");
+                new ChangeIPAddressAndNameWindow(battery);
+            }
+        });
+
+        contextMenu.getItems().addAll(calculateVoltage,
+//                changeBatteryNameAndAddress,
+                dataUpdate);
+
         pane.setOnContextMenuRequested(event -> contextMenu.show(pane, event.getScreenX(), event.getScreenY()));
 
         progressBar.progressProperty().addListener(new ChangeListener<>() {
@@ -90,6 +106,7 @@ public class BatteryIndicatorController implements Initializable {
         this.battery = battery;
         System.out.println(battery.getName() + "|" + battery.getIpAddress());
         batteryIndicatorName.setText(battery.getName());
+        batteryIPAddress.setText(battery.getIpAddress());
 
         //Удаляем невидимые элементы
         if (!battery.isChargeVisible()) {
@@ -97,6 +114,14 @@ public class BatteryIndicatorController implements Initializable {
             pane.getChildren().remove(progressBar);
         }
         update();
+    }
+
+    public void updateBatteryName() {
+        batteryIndicatorName.setText(battery.getName());
+    }
+
+    public void updateIPAddress() {
+        batteryIPAddress.setText(battery.getIpAddress());
     }
 
     public void update() {

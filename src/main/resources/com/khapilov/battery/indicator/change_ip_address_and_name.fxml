@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="main" onMouseDragged="#mouseDraggedAction" onMousePressed="#mousePressedAction" prefHeight="247.0" prefWidth="338.0" stylesheets="@applicationStyle.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.khapilov.battery.indicator.controllers.ChangeIPAddressAndNameController">
+
+    <ToolBar nodeOrientation="RIGHT_TO_LEFT" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <Button id="close-button" contentDisplay="CENTER" mnemonicParsing="false" onAction="#closeButtonAction" prefHeight="42.0" prefWidth="42.0" text="X" textAlignment="CENTER" textFill="#a1a1a1">
+            <font>
+                <Font name="System Bold" size="18.0" />
+            </font>
+        </Button>
+        <Button id="minimize-button" contentDisplay="CENTER" mnemonicParsing="false" onAction="#minimizeButtonAction" prefHeight="42.0" prefWidth="42.0" text="―" textAlignment="CENTER" textFill="#a1a1a1">
+            <font>
+                <Font name="System Bold" size="18.0" />
+            </font>
+        </Button>
+    </ToolBar>
+    <TextField fx:id="inputIPField" alignment="CENTER_RIGHT" layoutX="38.0" layoutY="64.0" prefHeight="32.0" prefWidth="249.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0">
+        <font>
+            <Font name="Century Gothic" size="16.0" />
+        </font>
+    </TextField>
+
+    <TextField fx:id="inputBatNameField" alignment="CENTER_RIGHT" layoutX="38.0" layoutY="136.0" prefHeight="32.0" prefWidth="280.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0">
+        <font>
+            <Font name="Century Gothic" size="16.0" />
+        </font>
+    </TextField>
+    <Button layoutX="244.0" layoutY="62.0" mnemonicParsing="false" onAction="#saveButtonAction" text="Сохранить" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="14.0">
+        <font>
+            <Font size="14.0" />
+        </font>
+    </Button>
+    <Label layoutX="26.0" layoutY="33.0" text="Введите IP адрес" textFill="WHITE">
+        <font>
+            <Font name="Century Gothic Bold" size="16.0" />
+        </font>
+    </Label>
+
+    <Label layoutX="26.0" layoutY="107.0" text="Введите обозначение батареи" textFill="WHITE">
+        <font>
+            <Font name="Century Gothic Bold" size="16.0" />
+        </font>
+    </Label>
+
+</AnchorPane>

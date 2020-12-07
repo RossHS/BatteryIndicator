@@ -8,8 +8,8 @@ import com.khapilov.battery.indicator.controllers.MainController;
  * @version 1.0 18.11.2020
  */
 public class Battery {
-    private final String name;
-    private final String ipAddress;
+    private String name;
+    private String ipAddress;
     private int percentCharging = 100;
     private final long chargeSec;
     private long currentSec;
@@ -43,8 +43,18 @@ public class Battery {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+        controller.updateBatteryName();
+    }
+
     public String getIpAddress() {
         return ipAddress;
+    }
+
+    public void setIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
+        controller.updateIPAddress();
     }
 
     public double getMaxVoltage() {
