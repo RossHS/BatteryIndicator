@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="battery" fx:id="pane" maxWidth="250.0" minWidth="250.0" prefWidth="250.0"
+            stylesheets="@applicationStyle.css" xmlns="http://javafx.com/javafx/11.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.khapilov.battery.indicator.controllers.SpotlightIndicatorController">
+    <Label fx:id="spotlightIndicatorName" layoutX="187.0" layoutY="9.0" text="Name" textFill="WHITE"
+           AnchorPane.rightAnchor="10.0">
+        <font>
+            <Font name="Century Gothic Bold" size="22.0"/>
+        </font>
+    </Label>
+    <ImageView fx:id="indicatorImage" fitHeight="22.0" fitWidth="28.0" layoutX="14.0" layoutY="12.0" pickOnBounds="true"
+               preserveRatio="true" AnchorPane.leftAnchor="10.0">
+        <Image url="@icon/red-button.png"/>
+    </ImageView>
+    <Button fx:id="powerButton" onAction="#powerOnOff" layoutX="20.0" layoutY="48.0" mnemonicParsing="false"
+            prefHeight="25.0" prefWidth="73.0" text="ON">
+        <font>
+            <Font name="Century Gothic Bold" size="12.0"/>
+        </font>
+    </Button>
+    <Button onAction="#anglePlus" layoutX="125.0" layoutY="48.0" mnemonicParsing="false" text="Луч +"/>
+    <Button onAction="#angleMinus" layoutX="185.0" layoutY="48.0" mnemonicParsing="false" text="Луч -"/>
+</AnchorPane>

@@ -2,6 +2,7 @@ package com.khapilov.battery.indicator.controllers;
 
 import com.khapilov.battery.indicator.App;
 import com.khapilov.battery.indicator.Battery;
+import com.khapilov.battery.indicator.Spotlight;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -67,6 +68,24 @@ public class MainController extends AbstractController implements Initializable 
     @FXML
     private BatteryIndicatorController cam4BatteryController;
 
+    @FXML
+    private AnchorPane spotlight1;
+    @FXML
+    private SpotlightIndicatorController spotlight1Controller;
+    @FXML
+    private AnchorPane spotlight2;
+    @FXML
+    private SpotlightIndicatorController spotlight2Controller;
+    @FXML
+    private AnchorPane spotlight3;
+    @FXML
+    private SpotlightIndicatorController spotlight3Controller;
+    @FXML
+    private AnchorPane spotlight4;
+    @FXML
+    private SpotlightIndicatorController spotlight4Controller;
+
+
     private final List<Battery> batteryList = new ArrayList<>();
     private static final File propertyFile = new File("C:\\Users\\User\\AppData\\Roaming\\batt.properties");
     public static final Runnable runnable = (Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.default");
@@ -100,6 +119,13 @@ public class MainController extends AbstractController implements Initializable 
         batteryList.add(cam2);
         batteryList.add(cam3);
         batteryList.add(cam4);
+
+        //Прожекторы
+        Spotlight spotlight1D = new Spotlight("Прожектор 1", "192.168.1.201", spotlight1Controller);
+        Spotlight spotlight2D = new Spotlight("Прожектор 2", "192.168.1.202", spotlight2Controller);
+        Spotlight spotlight3D = new Spotlight("Прожектор 3", "192.168.1.203", spotlight3Controller);
+        Spotlight spotlight4D = new Spotlight("Прожектор 4", "192.168.1.204", spotlight4Controller);
+
 
         preparePropertyFile();
 

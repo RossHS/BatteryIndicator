@@ -25,6 +25,12 @@
             <fx:include fx:id="cam3Battery" source="battery_indicator.fxml"/>
             <fx:include fx:id="cam4Battery" source="battery_indicator.fxml"/>
         </HBox>
+        <HBox fillHeight="false" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
+            <fx:include fx:id="spotlight1" source="spotlight_indicator.fxml"/>
+            <fx:include fx:id="spotlight2" source="spotlight_indicator.fxml"/>
+            <fx:include fx:id="spotlight3" source="spotlight_indicator.fxml"/>
+            <fx:include fx:id="spotlight4" source="spotlight_indicator.fxml"/>
+        </HBox>
         <padding>
             <Insets bottom="15.0" left="15.0" right="15.0" top="15.0"/>
         </padding>
