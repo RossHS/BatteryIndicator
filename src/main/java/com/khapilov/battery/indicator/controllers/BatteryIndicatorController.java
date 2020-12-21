@@ -18,6 +18,8 @@ import javafx.scene.layout.AnchorPane;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * @author Ross Khapilov
@@ -35,6 +37,10 @@ public class BatteryIndicatorController implements Initializable {
     @FXML
     private Label batteryPercent;
 
+    @FXML
+    private Label lowBatteryLabel;
+    private Timer lowBatteryLabelTime;
+
     private Battery battery;
     private boolean isActive;
     private boolean beepReady; //Флаг для звукового сигнала
@@ -43,6 +49,8 @@ public class BatteryIndicatorController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+
 //        DropShadow ds = new DropShadow(15, Color.GREEN);
 //        ds.setInput(new Glow(0.5));
 //        progressBar.setEffect(ds);
@@ -123,12 +131,40 @@ public class BatteryIndicatorController implements Initializable {
             progressBar.setProgress((double) battery.getPercentCharging() / 100);
             batteryPercent.setText(battery.getPercentCharging() + "%");
 
+            lowBatteryCheck();
+
             //Если флаг готов и заряд меньше 15 процентов
             if (battery != null && beepReady && battery.getPercentCharging() <= 15) {
                 MainController.stagePopUpAction();
                 beepReady = false;
             }
         }
+    }
+
+    private void lowBatteryCheck() {
+        if (battery.getPercentCharging() <= 15) {
+            if (lowBatteryLabelTime == null) {
+                lowBatteryLabelTime = new Timer(true);
+                TimerTask timerTask = new TimerTask() {
+                    @Override
+                    public void run() {
+                        lowBatteryLabel.setVisible(!lowBatteryLabel.isVisible());
+                    }
+                };
+                lowBatteryLabelTime.scheduleAtFixedRate(timerTask, 100, 1_000);
+            }
+
+        } else if (battery.getPercentCharging() > 15) {
+            lowBatteryTimerReset();
+        }
+    }
+
+    private void lowBatteryTimerReset() {
+        if (lowBatteryLabelTime != null) {
+            lowBatteryLabelTime.cancel();
+            lowBatteryLabelTime = null;
+        }
+        lowBatteryLabel.setVisible(false);
     }
 
     public void turnOn() {
@@ -144,6 +180,8 @@ public class BatteryIndicatorController implements Initializable {
             isActive = false;
             indicatorImage.setImage(offImage);
             beepReady = false;
+
+            lowBatteryTimerReset();
         }
     }
 
