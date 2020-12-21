@@ -19,6 +19,8 @@ public class Battery {
     private double minV = 14.8;
     private double maxV = 16.8;
 
+    public static final int LOW_BATTERY_PERCENT = 15;
+
     public Battery(String name, String ipAddress, double chargeH, BatteryIndicatorController controller) {
         this(name, ipAddress, chargeH, controller, true);
     }

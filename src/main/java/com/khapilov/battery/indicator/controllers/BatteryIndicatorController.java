@@ -134,7 +134,7 @@ public class BatteryIndicatorController implements Initializable {
             lowBatteryCheck();
 
             //Если флаг готов и заряд меньше 15 процентов
-            if (battery != null && beepReady && battery.getPercentCharging() <= 15) {
+            if (battery != null && beepReady && battery.getPercentCharging() <= Battery.LOW_BATTERY_PERCENT) {
                 MainController.stagePopUpAction();
                 beepReady = false;
             }
@@ -142,7 +142,7 @@ public class BatteryIndicatorController implements Initializable {
     }
 
     private void lowBatteryCheck() {
-        if (battery.getPercentCharging() <= 15) {
+        if (battery.getPercentCharging() <= Battery.LOW_BATTERY_PERCENT) {
             if (lowBatteryLabelTime == null) {
                 lowBatteryLabelTime = new Timer(true);
                 TimerTask timerTask = new TimerTask() {
@@ -154,7 +154,7 @@ public class BatteryIndicatorController implements Initializable {
                 lowBatteryLabelTime.scheduleAtFixedRate(timerTask, 100, 1_000);
             }
 
-        } else if (battery.getPercentCharging() > 15) {
+        } else if (battery.getPercentCharging() > Battery.LOW_BATTERY_PERCENT) {
             lowBatteryTimerReset();
         }
     }
