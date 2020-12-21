@@ -41,6 +41,10 @@ public class BatteryIndicatorController implements Initializable {
     private Label lowBatteryLabel;
     private Timer lowBatteryLabelTime;
 
+    @FXML
+    private Label workFromElectricityLabel;
+    private boolean workFromElectricalNetwork; //Флаг индикации работы от сети
+
     private Battery battery;
     private boolean isActive;
     private boolean beepReady; //Флаг для звукового сигнала
@@ -80,9 +84,17 @@ public class BatteryIndicatorController implements Initializable {
             }
         });
 
+        MenuItem workFromElectrical = new MenuItem("Работа от сети");
+        workFromElectrical.setOnAction(actionEvent -> {
+            if (battery != null) {
+                System.out.println("Работа от сети");
+                setVisibleBatteryIndicators(!workFromElectricalNetwork);
+            }
+        });
+
         contextMenu.getItems().addAll(calculateVoltage,
 //                changeBatteryNameAndAddress,
-                dataUpdate);
+                dataUpdate, workFromElectrical);
 
         pane.setOnContextMenuRequested(event -> contextMenu.show(pane, event.getScreenX(), event.getScreenY()));
 
@@ -133,7 +145,7 @@ public class BatteryIndicatorController implements Initializable {
 
             lowBatteryCheck();
 
-            //Если флаг готов и заряд меньше 15 процентов
+            //Если флаг готов и заряд меньше 10 процентов
             if (battery != null && beepReady && battery.getPercentCharging() <= Battery.LOW_BATTERY_PERCENT) {
                 MainController.stagePopUpAction();
                 beepReady = false;
@@ -142,7 +154,7 @@ public class BatteryIndicatorController implements Initializable {
     }
 
     private void lowBatteryCheck() {
-        if (battery.getPercentCharging() <= Battery.LOW_BATTERY_PERCENT) {
+        if (battery.getPercentCharging() <= Battery.LOW_BATTERY_PERCENT && !workFromElectricalNetwork) {
             if (lowBatteryLabelTime == null) {
                 lowBatteryLabelTime = new Timer(true);
                 TimerTask timerTask = new TimerTask() {
@@ -183,6 +195,14 @@ public class BatteryIndicatorController implements Initializable {
 
             lowBatteryTimerReset();
         }
+    }
+
+    public void setVisibleBatteryIndicators(boolean hide) {
+        if (hide) lowBatteryTimerReset();
+        batteryPercent.setVisible(!hide);
+        progressBar.setVisible(!hide);
+        workFromElectricityLabel.setVisible(hide);
+        workFromElectricalNetwork = hide;
     }
 
     private enum BarColor {
