@@ -56,6 +56,7 @@ public class Spotlight {
                 e.printStackTrace();
                 power = false;
                 Platform.runLater(controller::turnOff);
+                datagramSocketClient.close();
             } finally {
                 Platform.runLater(() -> controller.getPowerButton().setDisable(false));
             }
@@ -71,6 +72,7 @@ public class Spotlight {
                 Platform.runLater(controller::turnOff);
             } catch (IOException e) {
                 e.printStackTrace();
+                datagramSocketClient.close();
             } finally {
                 Platform.runLater(() -> controller.getPowerButton().setDisable(false));
             }
@@ -123,6 +125,11 @@ public class Spotlight {
 
         public void sendAngleMinus() throws IOException {
             DatagramPacket packet = new DatagramPacket(SPOTLIGHT_ANGLE_MINUS, SPOTLIGHT_ANGLE_MINUS.length, address, port);
+            socket.send(packet);
+        }
+
+        public void stop() throws IOException {
+            DatagramPacket packet = new DatagramPacket(SPOTLIGHT_STOP, SPOTLIGHT_STOP.length, address, port);
             socket.send(packet);
         }
 
