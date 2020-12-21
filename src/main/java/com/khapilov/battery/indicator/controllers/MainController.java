@@ -97,7 +97,7 @@ public class MainController extends AbstractController implements Initializable 
         main.prefHeightProperty().bind(vbox.heightProperty());
 
         //Батарея АРМ
-        Battery arm = new Battery("ARM", "127.0.0.1", 125, armBatteryController);
+        Battery arm = new Battery("ARM", "192.168.1.1", 125, armBatteryController);
         batteryList.add(arm);
 
         //Батареи RTR
