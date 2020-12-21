@@ -34,8 +34,6 @@ public class BatteryIndicatorController implements Initializable {
     private ProgressBar progressBar;
     @FXML
     private Label batteryPercent;
-    @FXML
-    private Label batteryIPAddress;
 
     private Battery battery;
     private boolean isActive;
@@ -106,7 +104,6 @@ public class BatteryIndicatorController implements Initializable {
         this.battery = battery;
         System.out.println(battery.getName() + "|" + battery.getIpAddress());
         batteryIndicatorName.setText(battery.getName());
-        batteryIPAddress.setText(battery.getIpAddress());
 
         //Удаляем невидимые элементы
         if (!battery.isChargeVisible()) {
@@ -118,10 +115,6 @@ public class BatteryIndicatorController implements Initializable {
 
     public void updateBatteryName() {
         batteryIndicatorName.setText(battery.getName());
-    }
-
-    public void updateIPAddress() {
-        batteryIPAddress.setText(battery.getIpAddress());
     }
 
     public void update() {

@@ -54,7 +54,6 @@ public class Battery {
 
     public void setIpAddress(String ipAddress) {
         this.ipAddress = ipAddress;
-        controller.updateIPAddress();
     }
 
     public double getMaxVoltage() {
