@@ -109,25 +109,21 @@ public class Spotlight {
         public void turnOn() throws IOException {
             DatagramPacket packet = new DatagramPacket(SPOTLIGHT_ON, SPOTLIGHT_ON.length, address, port);
             socket.send(packet);
-            socket.receive(packet);
         }
 
         public void turnOff() throws IOException {
             DatagramPacket packet = new DatagramPacket(SPOTLIGHT_OFF, SPOTLIGHT_OFF.length, address, port);
             socket.send(packet);
-            socket.receive(packet);
         }
 
         public void sendAnglePlus() throws IOException {
             DatagramPacket packet = new DatagramPacket(SPOTLIGHT_ANGLE_PLUS, SPOTLIGHT_ANGLE_PLUS.length, address, port);
             socket.send(packet);
-            socket.receive(packet);
         }
 
         public void sendAngleMinus() throws IOException {
             DatagramPacket packet = new DatagramPacket(SPOTLIGHT_ANGLE_MINUS, SPOTLIGHT_ANGLE_MINUS.length, address, port);
             socket.send(packet);
-            socket.receive(packet);
         }
 
         public void close() {
