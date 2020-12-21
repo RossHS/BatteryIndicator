@@ -11,7 +11,7 @@ public class Spotlight {
     private String ipAddress;
     private final SpotlightIndicatorController controller;
     private boolean power; //Индикатор Включения
-    private DatagramSocketClient datagramSocketClient;
+    private final DatagramSocketClient datagramSocketClient;
 
     public Spotlight(String name, String ipAddress, SpotlightIndicatorController controller) {
         this.name = name;
