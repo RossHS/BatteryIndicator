@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
 import java.net.URL;
@@ -74,14 +75,24 @@ public class SpotlightIndicatorController implements Initializable {
     }
 
     @FXML
-    public void anglePlus(ActionEvent actionEvent) {
-        if (!spotlight.isPower()) return;
-        System.out.println(spotlight.getName() + " anglePlus()");
+    public void angleMinusMousePressed() {
+        if(!spotlight.isPower()) return;
+        System.out.println(spotlight.getName()+" - angleMinusMousePressed()");
+        spotlight.angleMinus();
     }
 
     @FXML
-    public void angleMinus(ActionEvent actionEvent) {
-        if (!spotlight.isPower()) return;
-        System.out.println(spotlight.getName() + " angleMinus()");
+    public void anglePlusMousePressed() {
+        if(!spotlight.isPower()) return;
+        System.out.println(spotlight.getName()+" - anglePlusMousePressed()");
+        spotlight.anglePlus();
     }
+
+    @FXML
+    public void angleMouseReleased() {
+        if(!spotlight.isPower()) return;
+        System.out.println(spotlight.getName()+" - angleMouseReleased()");
+        spotlight.stop();
+    }
+
 }

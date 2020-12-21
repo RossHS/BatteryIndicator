@@ -19,12 +19,14 @@
                preserveRatio="true" AnchorPane.leftAnchor="10.0">
         <Image url="@icon/red-button.png"/>
     </ImageView>
-    <Button fx:id="powerButton" onAction="#powerOnOff" layoutX="20.0" layoutY="48.0" mnemonicParsing="false"
+    <Button fx:id="powerButton" layoutX="20.0" layoutY="48.0" mnemonicParsing="false" onAction="#powerOnOff"
             prefHeight="25.0" prefWidth="73.0" text="ON">
         <font>
             <Font name="Century Gothic Bold" size="12.0"/>
         </font>
     </Button>
-    <Button onAction="#anglePlus" layoutX="125.0" layoutY="48.0" mnemonicParsing="false" text="Луч +"/>
-    <Button onAction="#angleMinus" layoutX="185.0" layoutY="48.0" mnemonicParsing="false" text="Луч -"/>
+    <Button layoutX="125.0" layoutY="48.0" mnemonicParsing="false"
+            onMousePressed="#anglePlusMousePressed" onMouseReleased="#angleMouseReleased" text="Луч +"/>
+    <Button layoutX="185.0" layoutY="48.0" mnemonicParsing="false"
+            onMousePressed="#angleMinusMousePressed" onMouseReleased="#angleMouseReleased" text="Луч -"/>
 </AnchorPane>

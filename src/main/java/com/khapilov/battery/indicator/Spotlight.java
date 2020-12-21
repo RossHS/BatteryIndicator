@@ -49,14 +49,13 @@ public class Spotlight {
         controller.getPowerButton().setDisable(true);
         new Thread(() -> {
             try {
-                datagramSocketClient.turnOn();
+                datagramSocketClient.sendTurnOn();
                 power = true;
                 Platform.runLater(controller::turnOn);
             } catch (IOException e) {
                 e.printStackTrace();
                 power = false;
                 Platform.runLater(controller::turnOff);
-                datagramSocketClient.close();
             } finally {
                 Platform.runLater(() -> controller.getPowerButton().setDisable(false));
             }
@@ -67,12 +66,11 @@ public class Spotlight {
         controller.getPowerButton().setDisable(true);
         new Thread(() -> {
             try {
-                datagramSocketClient.turnOff();
+                datagramSocketClient.sendTurnOff();
                 power = false;
                 Platform.runLater(controller::turnOff);
             } catch (IOException e) {
                 e.printStackTrace();
-                datagramSocketClient.close();
             } finally {
                 Platform.runLater(() -> controller.getPowerButton().setDisable(false));
             }
@@ -80,11 +78,48 @@ public class Spotlight {
     }
 
     public void anglePlus() {
+        new Thread(() -> {
+            try {
+                datagramSocketClient.sendAnglePlus();
+            } catch (IOException e) {
 
+                e.printStackTrace();
+                try {
+                    datagramSocketClient.sendStop();
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+
+            }
+        }).start();
     }
 
     public void angleMinus() {
+        new Thread(() -> {
+            try {
+                datagramSocketClient.sendAngleMinus();
+            } catch (IOException e) {
 
+                e.printStackTrace();
+                try {
+                    datagramSocketClient.sendStop();
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+
+            }
+        }).start();
+    }
+
+    public void stop() {
+        new Thread(() -> {
+            try {
+                datagramSocketClient.sendStop();
+            } catch (IOException e) {
+                e.printStackTrace();
+                datagramSocketClient.close();
+            }
+        }).start();
     }
 
     private class DatagramSocketClient {
@@ -108,12 +143,12 @@ public class Spotlight {
             }
         }
 
-        public void turnOn() throws IOException {
+        public void sendTurnOn() throws IOException {
             DatagramPacket packet = new DatagramPacket(SPOTLIGHT_ON, SPOTLIGHT_ON.length, address, port);
             socket.send(packet);
         }
 
-        public void turnOff() throws IOException {
+        public void sendTurnOff() throws IOException {
             DatagramPacket packet = new DatagramPacket(SPOTLIGHT_OFF, SPOTLIGHT_OFF.length, address, port);
             socket.send(packet);
         }
@@ -128,7 +163,7 @@ public class Spotlight {
             socket.send(packet);
         }
 
-        public void stop() throws IOException {
+        public void sendStop() throws IOException {
             DatagramPacket packet = new DatagramPacket(SPOTLIGHT_STOP, SPOTLIGHT_STOP.length, address, port);
             socket.send(packet);
         }
