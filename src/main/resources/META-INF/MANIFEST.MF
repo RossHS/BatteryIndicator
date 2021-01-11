@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Main-Class: com.khapilov.battery.indicator.MainApp
+Class-Path: lib\javafx-graphics-11.0.2-win.jar lib\javafx-base-11.0.2-wi
+ n.jar lib\javafx-base-11.0.2.jar lib\javafx-controls-11.0.2-win.jar lib
+ \javafx-controls-11.0.2.jar lib\javafx-media-11.0.2-win.jar lib\javafx-
+ media-11.0.2.jar lib\javafx-fxml-11.0.2-win.jar lib\javafx-fxml-11.0.2.
+ jar lib\javafx-graphics-11.0.2.jar
+

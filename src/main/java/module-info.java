@@ -1,4 +1,4 @@
-module com.khapilov {
+module BatteryIndicator {
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.media;
